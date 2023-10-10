@@ -15,9 +15,9 @@ app = FastAPI()
 (port, endpoint) = init_parameters()
 
 class_name_file = (
-    "./class_names.txt"
-    if os.path.exists("./class_names.txt")
-    else "./../class_names.txt"
+    "./config/class_names.txt"
+    if os.path.exists("./config/class_names.txt")
+    else "./../config/class_names.txt"
 )
 with open(class_name_file, "r") as f:
     print(f"Load class names from {class_name_file}")

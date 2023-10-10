@@ -1,6 +1,11 @@
 FROM python:3.11.5
 WORKDIR /app
-COPY ./ /app/
+COPY ./config /app/
+COPY ./src /app/
+COPY ./.env /app/
+COPY ./requirements /app/
+COPY ./run.sh /app/
+
 EXPOSE 8080
 
 RUN mkdir -p /app/logs

@@ -5,3 +5,4 @@ data/
 */.vscode/
 */node_modules/
 */.idea/
+models/package-lock.json
