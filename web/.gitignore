@@ -1,9 +1,0 @@
-./package-lock.json
-.idea/
-.vscode/
-.build/
-node_modules/
-yarn.lock
-
-# misc
-.DS_Store

@@ -1,0 +1,25 @@
+.BreadList {
+    padding: 20px;
+    background-color: pink;
+}
+.BreadListTitle {
+    padding: 0;
+    margin: 0;
+}
+
+.BreedItems {
+    columns: 5;
+    -webkit-columns: 5;
+    -moz-columns: 5;
+}
+
+.BreedItem {
+    text-align: left;
+}
+
+.BreedItemHighlight {
+    text-align: left;
+    font-weight: bold;
+    font-style: italic;
+    text-decoration: underline;
+}
