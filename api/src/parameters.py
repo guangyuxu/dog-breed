@@ -6,7 +6,7 @@ from decouple import config
 def init_parameters():
     # Use decouple to get values from .env file
     port = config("PORT")
-    endpoint = config("END-POINT")
+    endpoint = config("ENDPOINT")
 
     # Use argparse to get values from command line
     parser = argparse.ArgumentParser(description="Dog Breed API")
@@ -16,8 +16,7 @@ def init_parameters():
         "--end-point",
         dest="end_point",
         default=endpoint,
-        action="store_true",
-        help="Endpoint of the model API",
+        help="Model-Endpoint",
     )
 
     args = parser.parse_args()

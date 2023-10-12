@@ -3,8 +3,8 @@ fastapi
 uvicorn
 python-multipart
 pillow
-tensorflow-serving-api
-matplotlib
+#tensorflow-serving-api
+#matplotlib
 numpy
 python-decouple
 argparse

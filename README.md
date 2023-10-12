@@ -36,9 +36,9 @@ docker pull emacski/tensorflow-serving:latest-linux_arm64
 
 ```shell
 # Normal case
-docker run -it -p 8501:8501 -v "./models/10:/models/" -e MODEL_NAME=10 tensorflow/serving
+docker run -it -p 8501:8501 -v "./models:/models/" -e MODEL_NAME=10 tensorflow/serving
 # MacOS M1/M2
-docker run -it -p 8501:8501 -v "./models/10:/models/" -e MODEL_NAME=10 emacski/tensorflow-serving
+docker run -it -p 8501:8501 -v ./models/:/models/dog_breed/ -e MODEL_NAME=dog_breed emacski/tensorflow-serving
 ```
 
 ### Running Option 2, Run with configuration file
@@ -47,17 +47,18 @@ docker run -it -p 8501:8501 -v "./models/10:/models/" -e MODEL_NAME=10 emacski/t
 # Normal case
 docker run -p 8500:8500 -p 8501:8501 \
   --name dog_breed_model \
-  --mount type=bind,source=./models/,target=/models \
-  --mount type=bind,source=./models.config,target=/models.config \
-  -t tensorflow/serving --model_config_file=/models.config \
+  --mount type=bind,source=./models/,target=/models/dog_breed \
+  --mount type=bind,source=./models.config,target=/models/models.config \
+  -e MODEL_NAME=dog_breed \
+  -t tensorflow/serving --model_config_file=/models/models.config \
   --allow_version_labels_for_unavailable_models=true
 # MacOS M1/M2
 docker run -p 8500:8500 -p 8501:8501 \
   --name dog_breed_model \
-  --mount type=bind,source=./models/,target=/models \
-  --mount type=bind,source=./models.config,target=/models.config \
-  -t emacski/tensorflow-serving \
-  --model_config_file=/models.config \
+  --mount type=bind,source=./models/,target=/models/dog_breed \
+  --mount type=bind,source=./models.config,target=/models/models.config \
+  -e MODEL_NAME=dog_breed \
+  -t emacski/tensorflow-serving --model_config_file=/models/models.config \
   --allow_version_labels_for_unavailable_models=true
 ```
 

@@ -25,6 +25,8 @@ app.add_middleware(
 
 
 (port, endpoint) = init_parameters()
+print(endpoint)
+
 
 class_name_file = (
     "./config/class_names.txt"
@@ -60,11 +62,11 @@ async def breeds():
 @app.post("/dog-breed/v1/predict")
 async def predict(file: UploadFile = File(...)):
     image = read_file_as_image(await file.read())
-    print(image)
     image_batch = np.expand_dims(image, 0)
 
     json_data = {"instances": image_batch.tolist()}
     response = requests.post(endpoint, json=json_data)
+    print(response.json())
     predictions = np.array(response.json()["predictions"][0])
 
     class_name = CLASS_NAMES[np.argmax(predictions)]
