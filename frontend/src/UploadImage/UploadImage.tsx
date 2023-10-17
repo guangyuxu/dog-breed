@@ -1,4 +1,4 @@
-import React, { SetStateAction, useEffect, useState } from 'react'
+import React, { useState } from 'react'
 import axios from 'axios'
 
 import './upload_image.css'
@@ -92,7 +92,7 @@ export default function UploadImage(props: Props) {
                     <div key={f.file.name} className='UploadedImageThumbnailDiv'>
                         <h3>{f.file.name}</h3>
                         <div><i><u>Breed:{f.breed} / {f.confidence}%</u></i></div>
-                        <img src={URL.createObjectURL(f.file)} className='UploadedImageThumbnailImg'/>
+                        <img src={URL.createObjectURL(f.file||'')} className='UploadedImageThumbnailImg'/>
                     </div>
                     ))
                 }
