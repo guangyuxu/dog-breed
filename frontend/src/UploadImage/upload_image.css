@@ -7,10 +7,6 @@
     margin: 0;
 }
 
-.UploadButton {
-    float: right;
-}
-
 .UploadedImageThumbnailDivs {
     display: flex;
     flex-direction: row;

@@ -15,7 +15,7 @@ export default function BreedList(props: {selectedBreeds: string[]}) {
 
     return (
         <div className='BreadList'>
-            <h1 className='BreadListTitle'>Breed List</h1>
+            <h3 className='BreadListTitle'>Breed List</h3>
             <ul className='BreedItems'>
                 {data.map(t => {
                     const className = props.selectedBreeds.indexOf(t) >= 0 ? "BreedItemHighlight": "BreedItem"

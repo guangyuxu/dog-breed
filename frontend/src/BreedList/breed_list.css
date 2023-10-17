@@ -8,9 +8,9 @@
 }
 
 .BreedItems {
-    columns: 5;
-    -webkit-columns: 5;
-    -moz-columns: 5;
+    columns: 6;
+    -webkit-columns: 6;
+    -moz-columns: 6;
 }
 
 .BreedItem {

@@ -53,7 +53,18 @@ async def ping():
 def read_file_as_image(data) -> np.ndarray:
     image = Image.open(BytesIO(data))
     rgb = image.convert("RGB").resize((224, 224))
-    return np.array(rgb)
+    img = np.array(rgb)
+    return np.expand_dims(img, 0)
+
+
+def format(predictions):
+    class_name = CLASS_NAMES[np.argmax(predictions)]
+    confidence = float(np.max(predictions))
+    confidence = round(confidence * 100, 2)
+    if confidence >= 40:
+        return {"class": class_name, "confidence": confidence}
+    else:
+        return {"class": class_name, "confidence": -1}
 
 
 @app.get("/dog-breed/v1/breeds")
@@ -63,27 +74,22 @@ async def breeds():
 
 @app.post("/dog-breed/v2/predict")
 async def predictFromModelServer(file: UploadFile = File(...)):
-    image = read_file_as_image(await file.read())
-    image_batch = np.expand_dims(image, 0)
+    image_batch = read_file_as_image(await file.read())
 
     json_data = {"instances": image_batch.tolist()}
     response = requests.post(endpoint, json=json_data)
-    print(response.json())
     predictions = np.array(response.json()["predictions"][0])
-    class_name = CLASS_NAMES[np.argmax(predictions)]
-    confidence = np.max(predictions)
-    return {"class": class_name, "confidence": float(confidence)}
+
+    return format(predictions)
 
 
 @app.post("/dog-breed/v1/predict")
 async def predictFromModelLocal(file: UploadFile = File(...)):
-    image = read_file_as_image(await file.read())
-    image_batch = np.expand_dims(image, 0)
-    predictions = MODEL.predict(image_batch)
-    class_name = CLASS_NAMES[np.argmax(predictions[0])]
-    confidence = np.max(predictions[0])
-    print(class_name, confidence)
-    return {"class": class_name, "confidence": float(confidence)}
+    image_batch = read_file_as_image(await file.read())
+
+    predictions = MODEL.predict(image_batch)[0]
+
+    return format(predictions)
 
 
 if __name__ == "__main__":

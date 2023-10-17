@@ -5,6 +5,7 @@ import './upload_image.css'
 
 interface BreedFile{
     breed: string;
+    confidence: string;
     file: File;
 }
 interface Props {
@@ -31,7 +32,7 @@ export default function UploadImage(props: Props) {
         const newFiles:BreedFile[] = Array.from(selectedFiles)
                                           .filter((file: File) => {return uploadedFileNames.indexOf(file.name) < 0 })
                                           .map((file: File) => {
-                                              return {breed: "", file: file};
+                                              return {breed: "", confidence: '', file: file};
                                           })
         const allFiles = [...newFiles, ...uploadedFiles].sort((f1, f2) => f1.file.name > f2.file.name ? 1 : -1)
         setUploadedFiles(allFiles)
@@ -44,7 +45,13 @@ export default function UploadImage(props: Props) {
         axios
             .post(url, formData, {headers})
             .then(response => {
-                breedFile.breed = response.data.class
+                if (Number(response.data.confidence) > 0) {
+                    breedFile.breed = response.data.class
+                    breedFile.confidence = response.data.confidence
+                } else {
+                    breedFile.breed = "Unknow"
+                    breedFile.confidence = "-"
+                }
             })
             .catch((error) => {
                 console.log(error);
@@ -65,29 +72,30 @@ export default function UploadImage(props: Props) {
             files => {
                 const breeds:string[] = files.map(t => t.breed)
                 props.setBreeds(breeds)
+                setUploadedFiles([])
                 setUploadedFiles([...files])
             }
         )
     }
 
     useEffect(() => {
-        //
+        
     }, [uploadedFiles])
 
     return (
         <div className='UploadImage'>
-            <h1 className='UploadImageTitle'>Upload Image</h1>
-            <div className='UploadButton'>
+            <div className='UploadImageTitle'>
+                <b>Upload Image </b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                 <input type="file" name='dogImage' onChange={onFileChange} multiple accept='image/*'/>
-
                 <button name='upload' onClick={onUpload}>Upload!</button>
+                
             </div>
 
             <div className='UploadedImageThumbnailDivs'>
                 {uploadedFiles.map((f: BreedFile) => (
                     <div key={f.file.name} className='UploadedImageThumbnailDiv'>
                         <h3>{f.file.name}</h3>
-                        <div><i><u>Breed:{f.breed || "..."}</u></i></div>
+                        <div><i><u>Breed:{f.breed} / {f.confidence}%</u></i></div>
                         <img src={URL.createObjectURL(f.file)} className='UploadedImageThumbnailImg'/>
                     </div>
                     ))
