@@ -78,10 +78,6 @@ export default function UploadImage(props: Props) {
         )
     }
 
-    useEffect(() => {
-        
-    }, [uploadedFiles])
-
     return (
         <div className='UploadImage'>
             <div className='UploadImageTitle'>
